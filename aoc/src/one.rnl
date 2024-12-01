@@ -1,0 +1,50 @@
+module Aoc.One
+
+fn run() {
+    part_two()
+}
+
+fn part_one() {
+    "inputs/one_text.txt"
+    |> File.open!()
+    |> create_lists()
+    |> Array.map(Math.abs)
+    |> Array.sum()
+    |> print()
+}
+
+fn part_two() {
+    let (first, second) = 
+        "inputs/one_text.txt"
+        |> File.open!()
+        |> create_lists()
+
+    let freq = Array.frequency(second)
+    Array.reduce(first, 0, \acc, x => {
+        case Map.get(freq, x) {
+            :nil => acc
+            n    => acc + (x*n)
+        }
+    })
+    |> print()
+}
+
+fn create_lists(data) {
+    data
+    |> String.lines()
+    |> Array.map(\l => String.split(l, " "))
+    |> Array.map(\l => Array.filter(l, \x => x != ""))
+    |> Array.map(\l => [String.parse_num(l@0), String.parse_num(l@1)])
+    |> Array.reduce(([], []), \acc, x => {
+        let (a, b) = acc
+        let [c, d] = x
+        (push(a, c), push(b, d))
+    })
+    |> \l => {
+        let (a, b) = l
+        let sa = Array.quicksort(a)
+        let sb = Array.quicksort(b)
+        #sa - sb original part_one return
+        return (sa, sb)
+    }
+}

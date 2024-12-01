@@ -1,0 +1,15 @@
+module Aoc
+
+fn main() {
+    let args = os_args()
+    if len(args) < 1 {
+        print("Usage: aoc <day>")
+        return -1
+    }
+
+    let n = String.parse_num(args@0)
+    case n {
+        1 => Aoc.One.run()
+        :nil => print("Unknown day")
+    }
+}
