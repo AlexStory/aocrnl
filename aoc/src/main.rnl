@@ -10,6 +10,7 @@ fn main() {
     let n = String.parse_num(args@0)
     case n {
         1 => Aoc.One.run()
+        2 => Aoc.Two.run()
         :nil => print("Unknown day")
     }
 }

@@ -1,0 +1,56 @@
+module Aoc.Two
+
+fn run() {
+    "inputs/two_text.txt"
+    |> get_input()
+    |> Array.map(is_safe)
+
+    |> Array.filter(\x => x != false)
+    |> len()
+    |> print()
+}
+
+fn get_input(filename) {
+    filename
+    |> File.open!()
+    |> String.lines()
+    |> Array.map(parse_line)
+}
+
+fn parse_line(line) {
+    line
+    |> \l => String.split(l, " ")
+    |> \l => Array.map(l, \x => {
+        let trimmed = String.trim(x)
+        String.parse_num(trimmed)
+    })
+}
+
+fn is_safe(line) {
+   Array.reduce_while(line, (:nil, :nil), \acc, next => {
+        case acc {
+            (:nil, :nil) => (:cont, (:nil, next))
+            (:nil, prev) => {
+                cond {
+                    prev < next and (prev > next - 4) => (:cont, (:asc, next))
+                    prev > next and (prev < next + 4) => (:cont, (:desc, next))
+                    true => (:halt, false)
+                }
+            }
+            (:asc, prev) => {
+                if prev < next and (prev > next - 4) {
+                    (:cont, (:asc, next))
+                } else {
+                    (:halt, false)
+                }
+            }
+            (:desc, prev) => {
+                if prev > next and (prev < next + 4) {
+                    (:cont, (:desc, next))
+                } else {
+                    (:halt, false)
+                }
+            }
+        }
+   })
+} 
